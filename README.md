@@ -13,3 +13,5 @@ ctrl c fecha todos os processos
 npx prisma migrate dev  TIPO O COMMIT
 npx ts-node-dev --respawn script.ts 
 npx ts-node script.ts
+
+ npm i --fix-broken
