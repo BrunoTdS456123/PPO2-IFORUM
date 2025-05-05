@@ -1,52 +1,45 @@
 import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient({})
+const prisma = new PrismaClient()
 
-// A `main` function so that you can use async/await
+async function registerUser(email: string, name: string, password: string, nickname: string) {
+  try {
+    // Verifica se o e-mail já está cadastrado
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    })
+
+    if (existingUser) {
+      throw new Error('E-mail já cadastrado.')
+    }
+
+    // Cria o usuário sem hash na senha
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        name,
+        password, // Corrigido para "password"
+        nickname,
+        bio: '', // Bio pode ser inicializada como uma string vazia
+      },
+    })
+
+    console.log('Usuário criado com sucesso:', newUser)
+    return newUser
+  } catch (error) {
+    console.error('Erro ao registrar usuário:', error.message)
+    throw error
+  }
+}
+
+// Exemplo de uso
 async function main() {
-  // Create user, posts, and categories
-  const user = await prisma.user.create({
-    data: {
-      email: 'ariadne@prisma.io',
-      name: 'Ariadne',
-      posts: {
-        create: [
-          {
-            title: 'My first day at Prisma',
-            like: 0 , 
-            categories: {
-              create: {
-                name: 'Office',
-              },
-            },
-          },
-          {
-            title: 'How to connect to a SQLite database',
-            like: 0 ,
-            categories: {
-              create: [{ name: 'Databases' }, { name: 'Tutorials' }],
-            },
-          },
-        ],
-      },
-    },
-  })
-
-  // Return user, and posts, and categories
-  const returnUser = await prisma.user.findUnique({
-    where: {
-      id: user.id,
-    },
-    include: {
-      posts: {
-        include: {
-          categories: true,
-        },
-      },
-    },
-  })
-
-  console.log(returnUser)
+  try {
+    // Registro de um novo usuário
+    await registerUser('joao@example.com', 'João', 'senha123', 'joaonickname')
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 main()

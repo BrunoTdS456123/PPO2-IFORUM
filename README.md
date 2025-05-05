@@ -7,6 +7,8 @@ https://www.prisma.io/docs/orm/prisma-schema/data-model/models código de um fó
 
 https://www.youtube.com/watch?v=rftl2GMlGh0&t=32s
 
+https://dev.to/vitorrios1001/utilizando-o-prisma-com-typescript-e-sqlite-um-guia-pratico-3nn1
+
 git pull 
 git push 
 ctrl c fecha todos os processos 
@@ -15,3 +17,5 @@ npx ts-node-dev --respawn script.ts
 npx ts-node script.ts
 
  npm i --fix-broken
+npm install express body-parser @prisma/client
+npm install -D typescript ts-node-dev @types/express
