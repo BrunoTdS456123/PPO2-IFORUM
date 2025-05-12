@@ -1,10 +1,10 @@
 import express from 'express';
-//import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import path from 'path';
 
 const app = express();
-//const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 
 app.use(express.static(path.join(__dirname, 'src')));
@@ -14,7 +14,7 @@ app.get('/', (req: any, res: any) => {
 
 app.use(express.json());
 app.use(cors());
-/*
+
 // Rota para criar um novo usuário
 app.post('/register', async (req: any, res: any) => {
   const { email, name, nickname, password } = req.body;
@@ -47,7 +47,7 @@ app.post('/register', async (req: any, res: any) => {
   }
 });
 
-*/
+
 
 app.get('/', (req: any, res: any) => {
   res.sendFile(__dirname + 'index.html');
