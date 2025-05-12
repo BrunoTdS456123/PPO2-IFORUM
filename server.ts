@@ -1,17 +1,26 @@
-import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import express from 'express';
+//import { PrismaClient } from '@prisma/client';
+import cors from 'cors';
+import path from 'path';
 
-const prisma = new PrismaClient();
 const app = express();
+//const prisma = new PrismaClient();
 
-// Middleware para processar JSON
+
+app.use(express.static(path.join(__dirname, 'src')));
+app.get('/', (req: any, res: any) => {
+  res.redirect('./src/index.html');
+})
+
 app.use(express.json());
-
-// Endpoint para cadastro
-app.post('/register', async (req: Request, res: Response) => {
-  const { email, name, password, nickname } = req.body;
+app.use(cors());
+/*
+// Rota para criar um novo usuário
+app.post('/register', async (req: any, res: any) => {
+  const { email, name, nickname, password } = req.body;
 
   try {
+    // Verifica se o e-mail já está cadastrado
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -20,21 +29,29 @@ app.post('/register', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'E-mail já cadastrado.' });
     }
 
+    // Cria o usuário no banco de dados
     const newUser = await prisma.user.create({
       data: {
         email,
         name,
-        password,
         nickname,
-        bio: '',
+        password,
+        bio: '', // Bio inicializada como string vazia
       },
     });
 
     res.status(201).json({ message: 'Usuário criado com sucesso!', user: newUser });
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao criar usuário.' });
   }
 });
+
+*/
+
+app.get('/', (req: any, res: any) => {
+  res.sendFile(__dirname + 'index.html');
+})
 
 // Inicia o servidor
 const PORT = 3000;
