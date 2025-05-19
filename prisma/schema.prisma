@@ -32,7 +32,8 @@ model Post {
   author     User       @relation(fields: [authorId], references: [id])
   authorId   Int
   categories Category[]
-  like       Int
+  like       Int        @default(0)
+  content    String
   
 }
 model Report {

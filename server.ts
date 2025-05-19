@@ -2,6 +2,7 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 
 const app = express();
 const prisma = new PrismaClient();
@@ -58,3 +59,61 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+
+
+
+
+//Postagens
+// Rota para criar uma nova postagem
+app.post('/posts', async (req: any, res: any) => {
+  const { title, content, authorId } = req.body;
+
+  try {
+    // Verifica se o autor existe
+    const authorExists = await prisma.user.findUnique({
+      where: { id: authorId },
+    });
+
+    if (!authorExists) {
+      return res.status(400).json({ error: 'Autor não encontrado.' });
+    }
+
+    // Cria a postagem no banco de dados
+    const newPost = await prisma.post.create({
+      data: {
+        title,
+        content,
+        author: {
+          connect: { id: authorId }, // Conecta a postagem ao autor
+        },
+      },
+    });
+
+    res.status(201).json({ message: 'Postagem criada com sucesso!', post: newPost });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao criar postagem.' });
+  }
+});
+
+// Rota para listar todas as postagens
+app.get('/posts', async (req: any, res: any) => {
+  try {
+    const posts = await prisma.post.findMany({
+      include: {
+        author: true, // Inclui os dados do autor
+      },
+    });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar postagens.' });
+  }
+});
+
+
+
+
+
+

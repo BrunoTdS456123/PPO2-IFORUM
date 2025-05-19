@@ -1,0 +1,12 @@
+[
+    {"id": 1, "nome": "Programação"},
+    {"id": 2, "nome": "Banco de Dados"},
+    {"id": 3, "nome": "Redes"},
+    {"id": 4, "nome": "Sistemas Operacionais"},
+    {"id": 5, "nome": "Engenharia de Software"},
+    {"id": 6, "nome": "Inteligência Artificial"},
+    {"id": 7, "nome": "Desenvolvimento Web"},
+    {"id": 8, "nome": "Desenvolvimento Móvel"},
+    {"id": 9, "nome": "Segurança da Informação"},
+    {"id": 10, "nome": "Ciência de Dados"}
+]
