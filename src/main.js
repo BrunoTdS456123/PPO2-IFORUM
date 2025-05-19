@@ -50,3 +50,52 @@ async function loadPosts() {
 
 // Carrega as postagens ao carregar a página
 loadPosts();
+
+
+// Lógica para curtir uma postagem
+async function likePost(postId) {
+    try {
+        const response = await fetch(`/posts/${postId}/like`, {
+            method: 'POST',
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            const likeCountElement = document.getElementById(`like-count-${postId}`);
+            likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1; // Atualiza o contador no frontend
+        } else {
+            alert(result.error);
+        }
+    } catch (error) {
+        console.error('Erro ao curtir postagem:', error);
+    }
+}
+
+// Atualizar a lógica de carregar postagens para incluir o botão de like
+async function loadPosts() {
+    try {
+        const response = await fetch('/posts');
+        const posts = await response.json();
+
+        const postsDiv = document.getElementById('posts');
+        postsDiv.innerHTML = '';
+
+        posts.forEach((post) => {
+            const postElement = document.createElement('div');
+            postElement.innerHTML = `
+                <h3>${post.title}</h3>
+                <p>${post.content}</p>
+                <small>Autor: ${post.author.nickname || 'Desconhecido'}</small>
+                <p>Likes: <span id="like-count-${post.id}">${post.like}</span></p>
+                <button onclick="likePost(${post.id})">👍 Curtir</button>
+            `;
+            postsDiv.appendChild(postElement);
+        });
+    } catch (error) {
+        console.error('Erro ao carregar postagens:', error);
+    }
+}
+
+// Carrega as postagens ao carregar a página
+loadPosts();

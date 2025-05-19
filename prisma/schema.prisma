@@ -7,20 +7,18 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL") 
-
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
   password String
-  name    String?
+  name     String?
   nickname String?
-  role    Role     @default(USER)
-  bio    String
-  posts   Post[]
-  
+  role     Role    @default(USER)
+  bio      String
+  posts    Post[]
 }
 
 model Post {
@@ -34,16 +32,17 @@ model Post {
   categories Category[]
   like       Int        @default(0)
   content    String
-  
 }
+
 model Report {
-  id         Int        @id @default(autoincrement())
-  title      String
-  text       String
+  id    Int    @id @default(autoincrement())
+  title String
+  text  String
 }
+
 model Comment {
-  id         Int        @id @default(autoincrement())
-  text       String
+  id   Int    @id @default(autoincrement())
+  text String
 }
 
 model Category {

@@ -1,3 +1,4 @@
+
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
@@ -113,7 +114,24 @@ app.get('/posts', async (req: any, res: any) => {
 });
 
 
+//categorias
 
 
 
+// Rota para adicionar um like a uma postagem
+app.post('/posts/:id/like', async (req: any, res: any) => {
+  const { id } = req.params;
 
+  try {
+    // Incrementa o número de likes da postagem
+    const updatedPost = await prisma.post.update({
+      where: { id: parseInt(id) },
+      data: { like: { increment: 1 } },
+    });
+
+    res.status(200).json({ message: 'Like adicionado com sucesso!', post: updatedPost });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao adicionar like.' });
+  }
+});
