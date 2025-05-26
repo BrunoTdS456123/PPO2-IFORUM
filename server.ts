@@ -135,3 +135,4 @@ app.post('/posts/:id/like', async (req: any, res: any) => {
     res.status(500).json({ error: 'Erro ao adicionar like.' });
   }
 });
+
