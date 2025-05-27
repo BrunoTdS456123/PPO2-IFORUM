@@ -18,7 +18,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
       if (response.ok) {
         alert('Usuário cadastrado com sucesso!');
         // Redirecionar para login, se quiser:
-        // window.location.href = '../login/login.html';
+        window.location.href = 'C:\Users\Alunos\Documents\PPO2-IFORUM\src\index.html';
       } else {
         alert(data.error || 'Erro ao cadastrar usuário.');
       }

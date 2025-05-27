@@ -9,6 +9,8 @@ https://www.youtube.com/watch?v=rftl2GMlGh0&t=32s
 
 https://dev.to/vitorrios1001/utilizando-o-prisma-com-typescript-e-sqlite-um-guia-pratico-3nn1
 
+https://lucia-auth.com/sessions/basic-api/prisma
+
 git pull 
 git push 
 ctrl c fecha todos os processos 
@@ -27,3 +29,5 @@ npm install --save-dev @types/cors
 npm install -D tsx
 
 npx tsx ./server.ts
+
+npx prisma generate
