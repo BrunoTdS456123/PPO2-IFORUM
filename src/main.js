@@ -51,9 +51,12 @@ async function loadPosts() {
 // Carrega as postagens ao carregar a página
 loadPosts();
 
-
+let isPostLiked = [];
 // Lógica para curtir uma postagem
 async function likePost(postId) {
+    if (isPostLiked[postId] == null || isPostLiked[postId]== undefined){
+        isPostLiked[postId] = false; // Inicializa o estado de curtida da postagem
+    }
     try {
         const response = await fetch(`/posts/${postId}/like`, {
             method: 'POST',
@@ -61,7 +64,8 @@ async function likePost(postId) {
 
         const result = await response.json();
 
-        if (response.ok) {
+        if (response.ok && !isPostLiked[postId]) {
+            isPostLiked[postId] = true; // Marca a postagem como curtida
             const likeCountElement = document.getElementById(`like-count-${postId}`);
             likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1; // Atualiza o contador no frontend
         } else {

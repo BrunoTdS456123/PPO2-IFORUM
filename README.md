@@ -14,7 +14,7 @@ git push
 ctrl c fecha todos os processos 
 npx prisma migrate dev  TIPO O COMMIT
 npx ts-node-dev --respawn server.ts 
-npx ts-node script.ts
+npx ts-node server.ts
 
  npm i --fix-broken
 npm install express body-parser @prisma/client
