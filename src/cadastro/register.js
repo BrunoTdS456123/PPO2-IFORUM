@@ -1,6 +1,6 @@
-document.getElementById('registerForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-  
+window.addEventListener("DOMContentLoaded", function() {
+  document.getElementById('registerForm').addEventListener("submit", async function(e) {
+    e.preventDefault(); // before the code
     const email = document.getElementById('email').value;
     const name = document.getElementById('name').value;
     const nickname = document.getElementById('nickname').value;
@@ -13,16 +13,21 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         body: JSON.stringify({ email, name, nickname, password })
       });
   
-      const data = await response.json();
+      const data =  response.json();
   
       if (response.ok) {
         alert('Usuário cadastrado com sucesso!');
         // Redirecionar para login, se quiser:
-        window.location.href = 'C:\Users\Alunos\Documents\PPO2-IFORUM\src\index.html';
+        window.location.href = '../index.html';
       } else {
         alert(data.error || 'Erro ao cadastrar usuário.');
       }
     } catch (error) {
       alert('Erro ao conectar com o servidor.');
     }
-  });
+
+    console.log('hi');
+  })
+});
+
+  
