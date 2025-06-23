@@ -59,7 +59,7 @@ app.get('/cadastro', (req: any, res: any) => {
     res.sendFile(path.join(__dirname + 'cadastro.html'));
   }
   res.end();
-}
+});
 
 
 
