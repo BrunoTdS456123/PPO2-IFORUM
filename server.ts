@@ -1,21 +1,67 @@
 
-import express from 'express';
+const express = require('express');
+const session = require('express-session'); 
 import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import path from 'path';
-import fs from 'fs';
 
 const app = express();
 const prisma = new PrismaClient();
 
-
-app.use(express.static(path.join(__dirname, 'src')));
-app.get('/', (req: any, res: any) => {
-  res.redirect('./src/index.html');
-})
+app.use(session({
+	secret: '#456&$%$#@!@#',
+	resave: true,
+	saveUninitialized: true
+}));
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'src')));
+
+
+app.get('/', (req: any, res: any) => {
+  
+  if (req.session.loggedin) {
+    res.sendFile(path.join(__dirname + 'index.html'));
+  } else  {
+    res.sendFile(path.join(__dirname + 'login.html'));
+  }
+  res.end();
+});
+
+app.post('/login', (req: any, res: any) => {
+  const { email, password } = req.body;
+
+  prisma.user.findUnique({
+    where: { email: email }
+  }).then((user: any) => {
+    if (user && user.password === password) {
+      req.session.loggedin = true;
+      req.session.email = email;
+      req.session.userId = user.id; // Armazena o ID do usuário na sessão
+      req.session.userName = user.name; // Armazena o nome do usuário na sessão
+      res.sendFile(path.join(__dirname + 'index.html'));
+    } else {
+      res.status(401).send('Credenciais inválidas');
+    }
+  }).catch((error: any) => {
+    console.error(error);
+    res.status(500).send('Erro ao autenticar usuário');
+  });
+  
+});
+
+app.get('/cadastro', (req: any, res: any) => {
+  if (req.session.loggedin) {
+    res.sendFile(path.join(__dirname + 'index.html'));
+  } else {
+    res.sendFile(path.join(__dirname + 'cadastro.html'));
+  }
+  res.end();
+}
+
+
 
 // Rota para criar um novo usuário
 app.post('/register', async (req: any, res: any) => {
@@ -48,20 +94,6 @@ app.post('/register', async (req: any, res: any) => {
     res.status(500).json({ error: 'Erro ao criar usuário.' });
   }
 });
-
-
-
-app.get('/', (req: any, res: any) => {
-  res.sendFile(__dirname + 'index.html');
-})
-
-// Inicia o servidor
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
-
-
 
 
 //Postagens
@@ -114,10 +146,6 @@ app.get('/posts', async (req: any, res: any) => {
 });
 
 
-//categorias
-
-
-
 // Rota para adicionar um like a uma postagem
 app.post('/posts/:id/like', async (req: any, res: any) => {
   const { id } = req.params;
@@ -136,3 +164,8 @@ app.post('/posts/:id/like', async (req: any, res: any) => {
   }
 });
 
+// Inicia o servidor
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
