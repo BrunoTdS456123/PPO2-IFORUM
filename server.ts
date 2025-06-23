@@ -23,9 +23,9 @@ app.use(express.static(path.join(__dirname, 'src')));
 app.get('/', (req: any, res: any) => {
   
   if (req.session.loggedin) {
-    res.sendFile(path.join(__dirname + 'index.html'));
+    res.sendFile(path.join( __dirname, 'src',  'index.html'));
   } else  {
-    res.sendFile(path.join(__dirname + 'login.html'));
+    res.sendFile(path.join( __dirname, 'src',  'login.html'));
   }
   res.end();
 });
@@ -41,7 +41,7 @@ app.post('/login', (req: any, res: any) => {
       req.session.email = email;
       req.session.userId = user.id; // Armazena o ID do usuário na sessão
       req.session.userName = user.name; // Armazena o nome do usuário na sessão
-      res.sendFile(path.join(__dirname + 'index.html'));
+      res.sendFile(path.join(__dirname, 'src',  'index.html'));
     } else {
       res.status(401).send('Credenciais inválidas');
     }
@@ -54,9 +54,9 @@ app.post('/login', (req: any, res: any) => {
 
 app.get('/cadastro', (req: any, res: any) => {
   if (req.session.loggedin) {
-    res.sendFile(path.join(__dirname + 'index.html'));
+    res.sendFile(path.join( __dirname, 'src',  'index.html'));
   } else {
-    res.sendFile(path.join(__dirname + 'cadastro.html'));
+    res.sendFile(path.join( __dirname, 'src',  'cadastro.html'));
   }
   res.end();
 });
