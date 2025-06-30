@@ -99,25 +99,24 @@ app.post('/register', async (req: any, res: any) => {
 //Postagens
 // Rota para criar uma nova postagem
 app.post('/posts', async (req: any, res: any) => {
-  const { title, content, authorId } = req.body;
+  const { title, content, authorEmail } = req.body;
 
   try {
-    // Verifica se o autor existe
-    const authorExists = await prisma.user.findUnique({
-      where: { id: authorId },
-    });
-
-    if (!authorExists) {
-      return res.status(400).json({ error: 'Autor não encontrado.' });
+    if (req.session.loggedin){
+      res.status(200).json({"status": req.session.email});
+      // logica para inserir a postagem no banco de dados, dados do usuario estao "req.session.variavel"
+      // dados da postagem vao estar no req.body
     }
-
+    else{
+      res.status(200).json({"status": "not ok"});
+    }
     // Cria a postagem no banco de dados
     const newPost = await prisma.post.create({
       data: {
         title,
         content,
         author: {
-          connect: { id: authorId }, // Conecta a postagem ao autor
+          connect: { email: authorEmail }, // Conecta a postagem ao autor
         },
       },
     });

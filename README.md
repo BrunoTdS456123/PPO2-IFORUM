@@ -31,3 +31,8 @@ npm install -D tsx
 npx tsx ./server.ts
 
 npx prisma generate
+
+git config  user.name "BrunoTdS456123"
+git config  user.email "brunoterress1@gmail.com"
+
+npm i bootstrap@5.3.7

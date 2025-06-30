@@ -1,16 +1,18 @@
+
+
 // Lógica para criar uma nova postagem
 document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const title = document.getElementById('title').value;
     const content = document.getElementById('content').value;
-    const authorId = parseInt(document.getElementById('authorId').value);
+    //const authorEmail = parseInt(email.value);
 
     try {
         const response = await fetch('/posts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, content, authorId }),
+            body: JSON.stringify({ title, content}),
         });
 
         const result = await response.json();
