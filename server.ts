@@ -121,6 +121,7 @@ app.post('/posts', async (req: any, res: any) => {
       },
     });
 
+
     res.status(201).json({ message: 'Postagem criada com sucesso!', post: newPost });
   } catch (error) {
     console.error(error);
@@ -144,7 +145,7 @@ app.get('/posts', async (req: any, res: any) => {
   }
 });
 
-
+//fazer comentarios  e depois mexer no like , like precisa mudar no banco de dados
 // Rota para adicionar um like a uma postagem
 app.post('/posts/:id/like', async (req: any, res: any) => {
   const { id } = req.params;
