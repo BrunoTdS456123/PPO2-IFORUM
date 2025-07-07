@@ -99,7 +99,7 @@ app.post('/register', async (req: any, res: any) => {
 //Postagens
 // Rota para criar uma nova postagem
 app.post('/posts', async (req: any, res: any) => {
-  const { title, content, authorEmail } = req.body;
+  const { title, content } = req.body;
 
   try {
     if (req.session.loggedin){
@@ -116,7 +116,7 @@ app.post('/posts', async (req: any, res: any) => {
         title,
         content,
         author: {
-          connect: { email: authorEmail }, // Conecta a postagem ao autor
+          connect: { email : req.session.email }, // Conecta a postagem ao autor
         },
       },
     });
@@ -148,7 +148,9 @@ app.get('/posts', async (req: any, res: any) => {
 // Rota para adicionar um like a uma postagem
 app.post('/posts/:id/like', async (req: any, res: any) => {
   const { id } = req.params;
-
+  //if (req.session.loggedin){
+    
+  
   try {
     // Incrementa o número de likes da postagem
     const updatedPost = await prisma.post.update({
@@ -161,7 +163,11 @@ app.post('/posts/:id/like', async (req: any, res: any) => {
     console.error(error);
     res.status(500).json({ error: 'Erro ao adicionar like.' });
   }
-});
+}/*else{
+  res.status(200).json({"status": "not ok"});
+
+}}*/
+);
 
 // Inicia o servidor
 const PORT = 3000;
